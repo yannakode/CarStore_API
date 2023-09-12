@@ -1,5 +1,7 @@
 package com.carstore.carstore.models;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "TB_CARS")
@@ -7,8 +9,14 @@ public class Car {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long idChassi;
+    @NotNull
+    @Pattern(regexp = "^[A-Z][a-zA-Z]{0,9}*$", message = "Name must start with an uppercase letter and contain only letters.")
     private String name;
+    @NotNull
+    @Pattern(regexp = "^[A-Z][a-zA-Z]{0,9}*$", message = "Brand must start with an uppercase letter and contain only letters.")
     private String brand;
+    @NotNull
+    @Pattern(regexp = "^[A-Z][a-zA-Z]{0,9}*$", message = "Color must start with an uppercase letter and contain only letters.")
     private  String color;
     private String fabricationYear;
 
