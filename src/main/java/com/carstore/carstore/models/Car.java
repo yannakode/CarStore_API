@@ -1,10 +1,9 @@
-package models;
+package com.carstore.carstore.models;
 import jakarta.persistence.*;
-import org.springframework.boot.autoconfigure.web.WebProperties;
 
 @Entity
 @Table(name = "TB_CARS")
-public class CarModel {
+public class Car {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long idChassi;
