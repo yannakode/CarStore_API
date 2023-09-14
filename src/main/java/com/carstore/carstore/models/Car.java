@@ -1,4 +1,5 @@
 package com.carstore.carstore.models;
+import com.carstore.carstore.models.enums.ValidBrands;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -9,14 +10,11 @@ public class Car {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long idChassi;
-    @NotNull
-    @Pattern(regexp = "^[A-Z][a-zA-Z]{0,9}*$", message = "Name must start with an uppercase letter and contain only letters.")
+
     private String name;
-    @NotNull
-    @Pattern(regexp = "^[A-Z][a-zA-Z]{0,9}*$", message = "Brand must start with an uppercase letter and contain only letters.")
-    private String brand;
-    @NotNull
-    @Pattern(regexp = "^[A-Z][a-zA-Z]{0,9}*$", message = "Color must start with an uppercase letter and contain only letters.")
+
+    private ValidBrands brand;
+
     private  String color;
     private String fabricationYear;
 
@@ -36,11 +34,11 @@ public class Car {
         this.name = name;
     }
 
-    public String getBrand() {
+    public ValidBrands getBrand() {
         return brand;
     }
 
-    public void setBrand(String brand) {
+    public void setBrand(ValidBrands brand) {
         this.brand = brand;
     }
 
