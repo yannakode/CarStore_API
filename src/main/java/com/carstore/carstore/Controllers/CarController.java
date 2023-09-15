@@ -21,8 +21,16 @@ public class CarController {
     @Autowired
     private CarService carService;
 
+    @GetMapping
+    public ResponseEntity<?> getAll(){
+        List<CarDTO> carDTOList = carService.getAllCars();
+        if(carDTOList != null && !carDTOList.isEmpty()){
+            return ResponseEntity.status(HttpStatus.OK).body(carDTOList);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("List is empty or null");
+    }
     @GetMapping("{id}")
-    public ResponseEntity<Object> getCarByIdChassi(@PathVariable (value = "id") Long idChassi){
+    public ResponseEntity<Object> getCarByChassiId(@PathVariable (value = "id") Long idChassi){
         var car = carService.getCarById(idChassi);
         if(car.isPresent()){
                 return ResponseEntity.status(HttpStatus.OK).body(car.get());
@@ -31,10 +39,12 @@ public class CarController {
     }
     @PostMapping("/cars")
     public ResponseEntity<?> addCar(@RequestBody @Valid CarDTO carDTO){
-            Car car = new Car();
-            BeanUtils.copyProperties(carDTO, car);
-            carService.createCar(car);
-            BeanUtils.copyProperties(car, carDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(carDTO);
+        carService.createCar(carDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(carDTO);
+    }
+    @DeleteMapping("{id}")
+    ResponseEntity<?> deleteCar(@PathVariable(value = "id") Long chassiId){
+        boolean deleted = carService.deleteCar(chassiId);
+        return deleted ? ResponseEntity.ok().body("Car was deleted successfully") : ResponseEntity.notFound().build();
     }
 }
