@@ -1,19 +1,15 @@
 package com.carstore.carstore.Controllers;
 
-import com.carstore.carstore.models.Car;
 import com.carstore.carstore.models.DTOs.CarDTO;
+import com.carstore.carstore.models.enums.ValidBrands;
 import com.carstore.carstore.services.CarService;
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.InvalidPropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("api/car")
@@ -38,13 +34,18 @@ public class CarController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car not found");
     }
     @PostMapping("/cars")
-    public ResponseEntity<?> addCar(@RequestBody @Valid CarDTO carDTO){
-        carService.createCar(carDTO);
+    public ResponseEntity<?> addCar(@RequestBody @Valid CarDTO carDTO) {
+        boolean validBrand = carService.validBrand(carDTO.getBrand());
+        if(!validBrand){
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Invalid brand value. Only Chevrolet, Volvo, BMW, and Ford are accepted");
+        }
+        carService.saveCar(carDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(carDTO);
     }
     @DeleteMapping("{id}")
     ResponseEntity<?> deleteCar(@PathVariable(value = "id") Long chassiId){
         boolean deleted = carService.deleteCar(chassiId);
-        return deleted ? ResponseEntity.ok().body("Car was deleted successfully") : ResponseEntity.notFound().build();
+        return deleted ? ResponseEntity.ok().body("Car was deleted successfully") : ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("Car with chassiId " + chassiId + " not found");
     }
 }

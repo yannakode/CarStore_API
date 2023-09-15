@@ -13,7 +13,7 @@ public class Car {
 
     private String name;
 
-    private ValidBrands brand;
+    private String brand;
 
     private  String color;
     private String fabricationYear;
@@ -34,11 +34,11 @@ public class Car {
         this.name = name;
     }
 
-    public ValidBrands getBrand() {
+    public String getBrand() {
         return brand;
     }
 
-    public void setBrand(ValidBrands brand) {
+    public void setBrand(String brand) {
         this.brand = brand;
     }
 

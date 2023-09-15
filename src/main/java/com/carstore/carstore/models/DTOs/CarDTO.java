@@ -10,10 +10,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public class CarDTO{
+        @NotNull(message = "idChassi must not be null.")
+        Long idChassi;
         @Pattern(regexp = "^[A-Za-z ]+$", message = "Name must contain only letters and spaces.")
         @NotEmpty(message = "Name must not be null.")
         String name;
-        @NotNull @Enumerated(EnumType.STRING) ValidBrands brand;
+        @NotNull
+        String brand;
         @NotNull(message = "Color must not be null.")
         String color;
         @NotNull(message = "Fabrication year must not be null.")
@@ -22,7 +25,7 @@ public class CarDTO{
         public CarDTO() {
         }
 
-        public CarDTO(String name, ValidBrands brand, String color, String fabricationYear) {
+        public CarDTO(String name, String brand, String color, String fabricationYear) {
                 this.name = name;
                 this.brand = brand;
                 this.color = color;
@@ -42,11 +45,11 @@ public class CarDTO{
                 this.name = name;
         }
 
-        public ValidBrands getBrand() {
+        public String getBrand() {
                 return brand;
         }
 
-        public void setBrand(ValidBrands brand) {
+        public void setBrand(String brand) {
                 this.brand = brand;
         }
 
@@ -64,6 +67,14 @@ public class CarDTO{
 
         public void setFabricationYear(String fabricationYear) {
                 this.fabricationYear = fabricationYear;
+        }
+
+        public Long getIdChassi() {
+                return idChassi;
+        }
+
+        public void setIdChassi(Long idChassi) {
+                this.idChassi = idChassi;
         }
 }
 

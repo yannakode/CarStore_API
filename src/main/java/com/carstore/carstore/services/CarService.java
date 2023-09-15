@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,7 +17,7 @@ public class CarService {
     private CarRepository carRepository;
 
     @Transactional
-    public CarDTO createCar(CarDTO carDTO){
+    public CarDTO saveCar(CarDTO carDTO){
         Car car = new Car();
         BeanUtils.copyProperties(carDTO, car);
         carRepository.save(car);
@@ -30,10 +28,14 @@ public class CarService {
     @Transactional(readOnly = true)
     public Optional<CarDTO> getCarById(Long chassi){
         Optional<Car> carOp = carRepository.findById(chassi);
-        Car car = carOp.get();
-        CarDTO carDTO = new CarDTO();
-        BeanUtils.copyProperties(car, carDTO);
-        return Optional.of(carDTO);
+        if(carOp.isPresent()){
+            Car car = carOp.get();
+            CarDTO carDTO = new CarDTO();
+            BeanUtils.copyProperties(car, carDTO);
+            return Optional.of(carDTO);
+        }else{
+            return Optional.empty();
+        }
     }
 
     @Transactional(readOnly = true)
@@ -48,5 +50,9 @@ public class CarService {
         }
         carRepository.deleteById(chassiId);
         return true;
+    }
+    public boolean validBrand(String brand){
+        List<String> brands = Arrays.asList("Ford", "Chevrolet", "Volvo", "BMW");
+        return brands.contains(brand);
     }
 }
