@@ -1,10 +1,6 @@
 package com.carstore.carstore.models.DTOs;
 
 import com.carstore.carstore.models.Car;
-import com.carstore.carstore.models.enums.ValidBrands;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -25,13 +21,15 @@ public class CarDTO{
         public CarDTO() {
         }
 
-        public CarDTO(String name, String brand, String color, String fabricationYear) {
+        public CarDTO(long idChassi, String name, String brand, String color, String fabricationYear) {
+                this.idChassi = idChassi;
                 this.name = name;
                 this.brand = brand;
                 this.color = color;
                 this.fabricationYear = fabricationYear;
         }
         public CarDTO(Car car){
+                this.idChassi = car.getIdChassi();
                 this.name = car.getName();
                 this.brand = car.getBrand();
                 this.color = car.getColor();

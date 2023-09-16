@@ -1,5 +1,4 @@
 package com.carstore.carstore.models;
-import com.carstore.carstore.models.enums.ValidBrands;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -8,7 +7,7 @@ import jakarta.validation.constraints.Pattern;
 @Table(name = "TB_CARS")
 public class Car {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    //@GeneratedValue(strategy= GenerationType.AUTO)
     private Long idChassi;
 
     private String name;

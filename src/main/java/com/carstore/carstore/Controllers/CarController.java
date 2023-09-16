@@ -1,7 +1,6 @@
 package com.carstore.carstore.Controllers;
 
 import com.carstore.carstore.models.DTOs.CarDTO;
-import com.carstore.carstore.models.enums.ValidBrands;
 import com.carstore.carstore.services.CarService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/car")
@@ -35,13 +34,28 @@ public class CarController {
     }
     @PostMapping("/cars")
     public ResponseEntity<?> addCar(@RequestBody @Valid CarDTO carDTO) {
-        boolean validBrand = carService.validBrand(carDTO.getBrand());
-        if(!validBrand){
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Invalid brand value. Only Chevrolet, Volvo, BMW, and Ford are accepted");
+        var existingCar = carService.getCarById(carDTO.getIdChassi());
+        if(!existingCar.isPresent()){
+            boolean validBrand = carService.validBrand(carDTO.getBrand());
+            if(!validBrand){
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Invalid brand value. Only Chevrolet, Volvo, BMW, and Ford are accepted");
+            }
+            carService.saveCar(carDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(carDTO);
         }
-        carService.saveCar(carDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(carDTO);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ChassiId is already registered. Enter a valid chassiId");
     }
+
+
+    @PutMapping("/cars")
+    public ResponseEntity<?> updateCar(@RequestBody @Valid CarDTO carDTO){
+        var existingCarId = carService.updateCar(carDTO);
+        if(!existingCarId.isEmpty()){
+            return ResponseEntity.status(HttpStatus.OK).body(carDTO);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car not found. Send a valid chassiId");
+    }
+
     @DeleteMapping("{id}")
     ResponseEntity<?> deleteCar(@PathVariable(value = "id") Long chassiId){
         boolean deleted = carService.deleteCar(chassiId);

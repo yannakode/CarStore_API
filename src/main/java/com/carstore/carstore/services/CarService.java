@@ -43,6 +43,7 @@ public class CarService {
         List<Car> car = carRepository.findAll();
         return car.stream().map(CarDTO::new).collect(Collectors.toList());
     }
+
     @Transactional
     public boolean deleteCar(Long chassiId){
         if(!carRepository.existsById(chassiId)){
@@ -51,6 +52,22 @@ public class CarService {
         carRepository.deleteById(chassiId);
         return true;
     }
+
+    @Transactional
+    public Optional<CarDTO> updateCar(CarDTO carDTO){
+        Optional<Car> carOp = carRepository.findById(carDTO.getIdChassi());
+        if(carOp.isPresent()){
+            Car car = carOp.get();
+            BeanUtils.copyProperties(carDTO, car);
+            carRepository.save(car);
+            CarDTO carToDTO = new CarDTO();
+            BeanUtils.copyProperties(car, carToDTO);
+            return Optional.of(carToDTO);
+        }else{
+            return Optional.empty();
+        }
+    }
+
     public boolean validBrand(String brand){
         List<String> brands = Arrays.asList("Ford", "Chevrolet", "Volvo", "BMW");
         return brands.contains(brand);
