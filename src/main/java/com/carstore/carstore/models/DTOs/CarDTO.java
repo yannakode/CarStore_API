@@ -1,18 +1,18 @@
 package com.carstore.carstore.models.DTOs;
 
 import com.carstore.carstore.models.Car;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 
 public class CarDTO{
-        @Pattern(regexp = "^[A-Za-z ]+$", message = "Name must contain only letters and spaces.")
+        @Pattern(regexp = "^[A-Za-z ]{1,20}$", message = "Name must contain 1 to 20 letters and spaces only.")
         @NotEmpty(message = "Model must not be null.")
         String model;
         @NotNull(message = "brand must not be null.")
         String brand;
+        @Pattern(regexp = "^[A-Za-z ]{1,20}$", message = "Name must contain 1 to 20 letters and spaces only.")
         @NotNull(message = "Color must not be null.")
         String color;
+        @Size(min = 4, max = 4, message = "Field must be exactly 4 characters long")
         @NotNull(message = "Fabrication year must not be null.")
         String fabricationYear;
 
