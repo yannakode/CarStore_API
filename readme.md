@@ -26,11 +26,13 @@ The CarStore API is a CRUD (Create, Read, Update, Delete) API designed to manage
 ## Error Handling
 The API uses HTTP status codes to indicate the success or failure of a request. If an error occurs, the response will contain a JSON object with an error field providing additional details.
 
-In all EndPoints, an error message will be sent if any of the values sent are null or empty. The error will consist of, for example: 400 BAD REQUEST "The 'model' field cannot be null."
+In all EndPoints, an error message will be sent if any of the values sent are null or empty, or if the field does not contain at least one character (the fabricationYear field must contain exact 4 characters). The error will consist of, for example: 400 BAD REQUEST "The 'model' field cannot be null."
 
 In the PUT, DELETE, and GET (by ID) methods, the IDs sent must be valid chassis IDs that are already registered in the database. Otherwise, an error message will be sent. In this case, the message will consist of: 404 NOT FOUND "Car not found. Enter a valid chassis ID."
 
 In the POST method, only the values "Chevrolet, Volvo, BMW, and Ford" in the 'brand' field are accepted, with the first letter capitalized and the others in lowercase. If a different value is passed, an 404 error message indicating that the sent value is not valid will appear.
+
+All endpoint fields must contain at least one character, or a 400 Bad Request error will be sent
 
 The 200 OK response will indicate that the operations were successful.
 ## Car Object
