@@ -6,12 +6,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public class CarDTO{
-        @NotNull(message = "idChassi must not be null.")
-        Long idChassi;
         @Pattern(regexp = "^[A-Za-z ]+$", message = "Name must contain only letters and spaces.")
-        @NotEmpty(message = "Name must not be null.")
-        String name;
-        @NotNull
+        @NotEmpty(message = "Model must not be null.")
+        String model;
+        @NotNull(message = "brand must not be null.")
         String brand;
         @NotNull(message = "Color must not be null.")
         String color;
@@ -21,26 +19,25 @@ public class CarDTO{
         public CarDTO() {
         }
 
-        public CarDTO(long idChassi, String name, String brand, String color, String fabricationYear) {
-                this.idChassi = idChassi;
-                this.name = name;
+        public CarDTO(String model, String brand, String color, String fabricationYear) {
+                this.model = model;
                 this.brand = brand;
                 this.color = color;
                 this.fabricationYear = fabricationYear;
         }
         public CarDTO(Car car){
-                this.idChassi = car.getIdChassi();
-                this.name = car.getName();
+                this.model = car.getModel();
                 this.brand = car.getBrand();
                 this.color = car.getColor();
                 this.fabricationYear = car.getFabricationYear();
         }
-        public String getName() {
-                return name;
+
+        public String getModel() {
+                return model;
         }
 
-        public void setName(String name) {
-                this.name = name;
+        public void setModel(String model) {
+                this.model = model;
         }
 
         public String getBrand() {
@@ -65,14 +62,6 @@ public class CarDTO{
 
         public void setFabricationYear(String fabricationYear) {
                 this.fabricationYear = fabricationYear;
-        }
-
-        public Long getIdChassi() {
-                return idChassi;
-        }
-
-        public void setIdChassi(Long idChassi) {
-                this.idChassi = idChassi;
         }
 }
 

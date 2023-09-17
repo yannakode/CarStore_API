@@ -26,8 +26,8 @@ public class CarService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<CarDTO> getCarById(Long chassi){
-        Optional<Car> carOp = carRepository.findById(chassi);
+    public Optional<CarDTO> getCarById(Long chassiId){
+        Optional<Car> carOp = carRepository.findById(chassiId);
         if(carOp.isPresent()){
             Car car = carOp.get();
             CarDTO carDTO = new CarDTO();
@@ -54,15 +54,13 @@ public class CarService {
     }
 
     @Transactional
-    public Optional<CarDTO> updateCar(CarDTO carDTO){
-        Optional<Car> carOp = carRepository.findById(carDTO.getIdChassi());
+    public Optional<CarDTO> updateCar(Long id, CarDTO carDTO){
+        Optional<Car> carOp = carRepository.findById(id);
         if(carOp.isPresent()){
             Car car = carOp.get();
             BeanUtils.copyProperties(carDTO, car);
             carRepository.save(car);
-            CarDTO carToDTO = new CarDTO();
-            BeanUtils.copyProperties(car, carToDTO);
-            return Optional.of(carToDTO);
+            return Optional.of(carDTO);
         }else{
             return Optional.empty();
         }

@@ -25,35 +25,33 @@ public class CarController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("List is empty or null");
     }
     @GetMapping("{id}")
-    public ResponseEntity<Object> getCarByChassiId(@PathVariable (value = "id") Long idChassi){
-        var car = carService.getCarById(idChassi);
+    public ResponseEntity<Object> getCarByChassiId(@PathVariable (value = "id") Long chassiId){
+        var car = carService.getCarById(chassiId);
         if(car.isPresent()){
                 return ResponseEntity.status(HttpStatus.OK).body(car.get());
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car not found");
     }
+
     @PostMapping("/cars")
     public ResponseEntity<?> addCar(@RequestBody @Valid CarDTO carDTO) {
-        var existingCar = carService.getCarById(carDTO.getIdChassi());
-        if(!existingCar.isPresent()){
-            boolean validBrand = carService.validBrand(carDTO.getBrand());
-            if(!validBrand){
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Invalid brand value. Only Chevrolet, Volvo, BMW, and Ford are accepted");
-            }
-            carService.saveCar(carDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(carDTO);
+        if(!carService.validBrand(carDTO.getBrand())){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid brand value. Only Chevrolet, Volvo, BMW, and Ford are accepted");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ChassiId is already registered. Enter a valid chassiId");
+        carService.saveCar(carDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(carDTO);
     }
 
-
-    @PutMapping("/cars")
-    public ResponseEntity<?> updateCar(@RequestBody @Valid CarDTO carDTO){
-        var existingCarId = carService.updateCar(carDTO);
-        if(!existingCarId.isEmpty()){
-            return ResponseEntity.status(HttpStatus.OK).body(carDTO);
+    @PutMapping("/cars/{id}")
+    public ResponseEntity<?> updateCar(@PathVariable (value = "id") Long id, @RequestBody @Valid CarDTO carDTO){
+        if(!carService.validBrand(carDTO.getBrand())){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid brand value. Only Chevrolet, Volvo, BMW, and Ford are accepted");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car not found. Send a valid chassiId");
+        var existingCarId = carService.updateCar(id, carDTO);
+        if(existingCarId.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car not found. Send a valid chassiId");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(carDTO);
     }
 
     @DeleteMapping("{id}")

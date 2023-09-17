@@ -7,30 +7,30 @@ import jakarta.validation.constraints.Pattern;
 @Table(name = "TB_CARS")
 public class Car {
     @Id
-    //@GeneratedValue(strategy= GenerationType.AUTO)
-    private Long idChassi;
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long chassiId;
 
-    private String name;
+    private String model;
 
     private String brand;
 
     private  String color;
     private String fabricationYear;
 
-    public Long getIdChassi() {
-        return idChassi;
+    public Long getChassiId() {
+        return chassiId;
     }
 
-    public void setIdChassi(Long idChassi) {
-        this.idChassi = idChassi;
+    public void setChassiId(Long chassiId) {
+        this.chassiId = chassiId;
     }
 
-    public String getName() {
-        return name;
+    public String getModel() {
+        return model;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public String getBrand() {
