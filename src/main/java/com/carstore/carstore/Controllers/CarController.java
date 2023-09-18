@@ -49,7 +49,7 @@ public class CarController {
         }
         var existingCarId = carService.updateCar(id, carDTO);
         if(existingCarId.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car not found. Send a valid chassiId");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car not found. Please, provid a valid chassiId");
         }
         return ResponseEntity.status(HttpStatus.OK).body(carDTO);
     }

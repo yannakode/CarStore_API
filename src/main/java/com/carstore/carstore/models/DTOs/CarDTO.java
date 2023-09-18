@@ -9,11 +9,11 @@ public class CarDTO{
         @Pattern(regexp = "^[A-Za-z ]+$", message = "Name must contain only letters and spaces.")
         @NotEmpty(message = "Model must not be null.")
         String model;
-        @NotNull(message = "brand must not be null.")
+        @NotEmpty(message = "Model must not be null.")
         String brand;
-        @NotNull(message = "Color must not be null.")
+        @NotEmpty(message = "Model must not be null.")
         String color;
-        @NotNull(message = "Fabrication year must not be null.")
+        @NotEmpty(message = "Model must not be null.")
         String fabricationYear;
 
         public CarDTO() {
